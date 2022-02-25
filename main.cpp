@@ -2,6 +2,7 @@
 #include <iterator>
 #include <vector>
 #include <list>
+#include "iteratorVectorList.h"
 
 size_t counting_vector_with_iterator(std::vector<int>& tvector);
 size_t counting_list_with_iterator (std::list<std::vector<int>>& tlist);
@@ -9,13 +10,13 @@ size_t counting_list_with_iterator (std::list<std::vector<int>>& tlist);
 
 int main()
 {
+    VectorList<int> vl;
+    std::vector<int> vect {1,2,4};
+    vl.append(vect);
+    std::vector<int> vect2 {5,6,7};
+    vl.append(vect2);
 
-    std::vector<int> test_vector {0, 1, 2, 3, 4 ,5};
-    //std::vector<int>::iterator test_iterator = test_vector.begin();
-    std::list<std::vector<int>> VectorList {{1,2,3},{4,5,6},{7,8,9,7}};
     
-    std::cout <<"Counting elements in list of vectors "<< counting_list_with_iterator(VectorList) << std::endl;
-    //std::cout <<"Count in vector "<< counting_vector_with_iterator(VectorList) << std::endl;
 
     return 0;
 }
@@ -56,4 +57,7 @@ size_t counting_vector_with_iterator(std::vector<int>& tvector)
 
     return counter;
 }
+
+
+
 
