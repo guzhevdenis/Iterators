@@ -6,18 +6,21 @@
 
 size_t counting_vector_with_iterator(std::vector<int>& tvector);
 size_t counting_list_with_iterator (std::list<std::vector<int>>& tlist);
-
+void show_vector(std::vector<int>& vect);
 
 int main()
 {
     VectorList<int> vl;
+    VectorList<int>* vlp = &vl;
     std::vector<int> vect {1,2,4};
-    vl.append(vect);
+
     std::vector<int> vect2 {5,6,7};
-    vl.append(vect2);
 
-    
+    show_vector(vect);
+    show_vector(vect2);
 
+    //VectorList<int>::const_iterator ITER = vl.begin();
+    //std::cout << *(++ITER) <<std::endl;
     return 0;
 }
 
@@ -58,6 +61,14 @@ size_t counting_vector_with_iterator(std::vector<int>& tvector)
     return counter;
 }
 
+void show_vector(std::vector<int>& vect)
+{
+    std::vector<int>::iterator vecit = vect.begin();
+    for (; vecit != vect.end(); ++vecit)
+    {
+        std::cout << *vecit << std::endl;
+    }
+}
 
 
 
