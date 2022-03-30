@@ -12,12 +12,15 @@ int main()
 {
     VectorList<int> vl;
     VectorList<int>* vlp = &vl;
-    std::vector<int> vect {1,2,4};
+    std::vector<int> vect {1,2,4,7,8,9};
     vl.append(vect);
     std::vector<int> vect2 {5,6,7};
+
+    std::vector<int> vect3 {0,0,0};
     vl.append(vect2);
-    show_vector(vect);
-    show_vector(vect2);
+    vl.append(vect3);
+    //show_vector(vect);
+    //show_vector(vect2);
 
     VectorList<int>::const_iterator ITER = vl.begin();
     VectorList<int> vl2;

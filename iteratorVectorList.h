@@ -1,6 +1,6 @@
 #include <vector>
 #include <list>
-
+#include <iterator>
 template<class T>
 
 class VectorList
@@ -44,7 +44,7 @@ public:
         {
             counter++;
         }
-        return counter;
+        return counter+1;
     }
 
     // определите const_iterator 
@@ -56,21 +56,20 @@ public:
                                                      T*, 
                                                      T&> 
     {   
-        
-        
+
         friend class VectorList;
         public:
-        //const_iterator() = default;
+        const_iterator() = default;
         const_iterator(const const_iterator& other): p(other.p)
         {}
         bool operator!=(const_iterator const& other) const
         {
-            return (itlt != other.itlt);
+            return (itlt != other.itlt || itv != other.itv);
            
         }
         bool operator==(const_iterator const& other) const
         {   
-            return p == other.p;
+            return  (p == other.p && itlt == other.itlt && itv == other.itv);
         } //need for BOOST_FOREACH
 
         VectorList const operator*() const
@@ -79,10 +78,14 @@ public:
         }
         const_iterator& operator++()
         {
-            ++itv;
-            ++itlt;
-
-            
+            if(++itv != (*itlt).end())
+            {
+               
+            }
+            else if (++itlt != p->data_.end() )
+            {
+                itv = (*itlt).begin();
+            }
             return *this;
         }
 
@@ -122,10 +125,79 @@ public:
 
     // определите const_reverse_iterator
    // class const_reverse_iterator ...
+    class const_reverse_iterator:std::iterator<std::bidirectional_iterator_tag,
+                                                     T, 
+                                                     size_t,
+                                                     T*, 
+                                                     T&> 
+    {   
+        
+        
+        friend class VectorList;
+        public:
+        const_reverse_iterator() = default;
+        const_reverse_iterator(const const_reverse_iterator& other): p(other.p)
+        {}
+        bool operator!=(const_reverse_iterator const& other) const
+        {
+            return (itlt != other.itlt || itv != other.itv || p != other.p);
+           
+        }
+        bool operator==(const_reverse_iterator const& other) const
+        {   
+            return (p == other.p && itlt == other.itlt && itv == other.itv );
+        } //need for BOOST_FOREACH
+
+        VectorList const operator*() const
+        {
+            return *p;
+        }
+        const_reverse_iterator& operator++()
+        {
+            if(++itv != (*itlt).rend())
+            {
+               
+            }
+            else if (++itlt != p->data_.rend() )
+            {
+                itv = (*itlt).rbegin();
+            }
+            return *this;
+        }
+
+
+        private:
+
+
+        const_reverse_iterator(const VectorList* special, int i)
+        {
+            if ( i == 1)
+            {  
+                p = special;
+                itlt = special->data_.rbegin();
+                itv = (special->data_.back()).rbegin();
+            }
+            else 
+            {
+                p = special;
+                itlt = --(special->data_.rend());
+                itv = --((special->data_.back()).rend());
+            }
+
+        }
+
+        typename ListT::const_reverse_iterator itlt;
+        typename VectT::const__reverse_iterator itv;
+        VectorList const *p;
+    
+    };
+
 
     // определите методы rbegin / rend
    // const_reverse_iterator rbegin() const { return ... ;   }
    // const_reverse_iterator rend()   const { return ... ; }*/
+    const_reverse_iterator rbegin() const { return const__reverse_iterator(this, 1); }
+    const_reverse_iterator rend()   const { return const_reverse_iterator(this,2) ; }
 
     private:
     ListT data_;
