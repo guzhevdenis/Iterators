@@ -21,8 +21,11 @@ public:
 
     // метод, который будет использоваться для заполнения VectorList
     // гарантирует, что в списке не будет пустых массивов
-    template<class It>
-    void append(It p, It q); // определена снаружи
+    
+    void append(std::vector<T> p)
+    {
+        data_.push_back(p);
+    } // определена снаружи
 /*  {
         if (p != q)
             data_.push_back(VectT(p,q));
@@ -34,7 +37,14 @@ public:
     // определите метод size
     size_t size() const 
     {
-        return 0;
+        size_t counter = 0;
+        const_iterator it = this->begin();
+        const_iterator it2 = this->end();
+        for (;it!= it2; ++it)
+        {
+            counter++;
+        }
+        return counter;
     }
 
     // определите const_iterator 
@@ -50,48 +60,65 @@ public:
         
         friend class VectorList;
         public:
-        const_iterator() = default;
+        //const_iterator() = default;
         const_iterator(const const_iterator& other): p(other.p)
         {}
         bool operator!=(const_iterator const& other) const
         {
-            return p != other.p;
+            return (itlt != other.itlt);
+           
         }
         bool operator==(const_iterator const& other) const
         {   
             return p == other.p;
         } //need for BOOST_FOREACH
 
-        T operator*() const
+        VectorList const operator*() const
         {
             return *p;
         }
         const_iterator& operator++()
         {
-            ++p;
+            ++itv;
+            ++itlt;
+
+            
             return *this;
         }
+
+
         private:
         const_iterator(T*p):p(p)
         {
            
         }
-        const_iterator(ListT* data):p(p)
+
+        const_iterator(const VectorList* special, int i)
         {
-           
+            if ( i == 1)
+            {  
+                p = special;
+                itlt = special->data_.begin();
+                itv = (special->data_.front()).begin();
+            }
+            else 
+            {
+                p = special;
+                itlt = --(special->data_.end());
+                itv = --((special->data_.back()).end());
+            }
+
         }
 
-        T* p;
-        std::vector<T>* vect;
-        std::list<std::vector<T>>* listvect;
-        
-
+        typename ListT::const_iterator itlt;
+        typename VectT::const_iterator itv;
+        VectorList const *p;
     
     };
 
     // определите методы begin / end
-    const_iterator begin() const { return const_iterator(&(this->data_)); }
-   // const_iterator end()   const { return ... ; }
+    const_iterator begin() const { return const_iterator(this, 1); }
+    const_iterator end()   const { return const_iterator(this,2) ; }
 
     // определите const_reverse_iterator
    // class const_reverse_iterator ...
