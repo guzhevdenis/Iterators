@@ -22,15 +22,14 @@ public:
     // метод, который будет использоваться для заполнения VectorList
     // гарантирует, что в списке не будет пустых массивов
     
-    void append(std::vector<T> p)
+    template<class It>
+    void append(It p, It q); // определена снаружи
+
+    /*void append(std::vector<T> p)
     {
         data_.push_back(p);
-    } // определена снаружи
-/*  {
-        if (p != q)
-            data_.push_back(VectT(p,q));
-    } 
-*/
+    } */
+ 
 
     bool empty() const { return size() == 0; } 
 
@@ -45,6 +44,18 @@ public:
             counter++;
         }
         return counter+1;
+    }
+
+    /* функция для вывода на экран всех чисел*/
+    friend std::ostream &operator<<(std::ostream &os, VectorList const &m) { 
+        const_iterator it = m.begin();
+        for (; it != m.end(); ++it)
+        {
+             os << *it;
+             os << " ";
+
+        }
+        return os;
     }
 
     // определите const_iterator 
@@ -72,9 +83,9 @@ public:
             return  (p == other.p && itlt == other.itlt && itv == other.itv);
         } //need for BOOST_FOREACH
 
-        VectorList const operator*() const
+        T const operator*() const
         {
-            return *p;
+            return *itv;
         }
         const_iterator& operator++()
         {
@@ -120,7 +131,7 @@ public:
     };
 
     // определите методы begin / end
-    const_iterator begin() const { return const_iterator(this, 1); }
+    const_iterator begin() const { return const_iterator(this,1); }
     const_iterator end()   const { return const_iterator(this,2) ; }
 
     // определите const_reverse_iterator
@@ -187,7 +198,7 @@ public:
         }
 
         typename ListT::const_reverse_iterator itlt;
-        typename VectT::const__reverse_iterator itv;
+        typename VectT::const_reverse_iterator itv;
         VectorList const *p;
     
     };
@@ -196,8 +207,8 @@ public:
     // определите методы rbegin / rend
    // const_reverse_iterator rbegin() const { return ... ;   }
    // const_reverse_iterator rend()   const { return ... ; }*/
-    const_reverse_iterator rbegin() const { return const__reverse_iterator(this, 1); }
-    const_reverse_iterator rend()   const { return const_reverse_iterator(this,2) ; }
+    const_reverse_iterator rbegin() const { return const_reverse_iterator(this, 1); }
+    const_reverse_iterator rend()   const { return const_reverse_iterator(this, 2) ; }
 
     private:
     ListT data_;

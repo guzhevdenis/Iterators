@@ -22,11 +22,12 @@ int main()
     //show_vector(vect);
     //show_vector(vect2);
 
-    VectorList<int>::const_iterator ITER = vl.begin();
+    VectorList<int>::const_reverse_iterator ITER = vl.rbegin();
     VectorList<int> vl2;
+    size_t counter = vl.size();  
+    std::cout << counter << std::endl;
     //vl2 = ITER;
-    size_t counter = vl.size();   
-    std::cout << counter << std::endl; 
+    std::cout << vl << std::endl; 
     return 0;
 }
 
